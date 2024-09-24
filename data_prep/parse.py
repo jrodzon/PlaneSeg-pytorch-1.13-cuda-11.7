@@ -245,16 +245,16 @@ def mergePlanes(points, planes, planePointIndices, planeSegments, segmentNeighbo
 
 def readMesh(scene_id):
 
-    filename = ROOT_FOLDER + scene_id + '/' + scene_id + '.aggregation.json'
+    filename = ROOT_FOLDER + '/' + scene_id + '/' + scene_id + '.aggregation.json'
     data = json.load(open(filename, 'r'))
     aggregation = np.array(data['segGroups'])
 
     high_res = False
 
     if high_res:
-        filename = ROOT_FOLDER + scene_id + '/' + scene_id + '_vh_clean.labels.ply'
+        filename = ROOT_FOLDER + '/' + scene_id + '/' + scene_id + '_vh_clean.labels.ply'
     else:
-        filename = ROOT_FOLDER + scene_id + '/' + scene_id + '_vh_clean_2.labels.ply'
+        filename = ROOT_FOLDER + '/' + scene_id + '/' + scene_id + '_vh_clean_2.labels.ply'
         pass
 
     plydata = PlyData.read(filename)
@@ -265,9 +265,9 @@ def readMesh(scene_id):
     semanticSegmentation = vertices['label']
 
     if high_res:
-        filename = ROOT_FOLDER + scene_id + '/' + scene_id + '_vh_clean.segs.json'
+        filename = ROOT_FOLDER + '/' + scene_id + '/' + scene_id + '_vh_clean.segs.json'
     else:
-        filename = ROOT_FOLDER + scene_id + '/' + scene_id + '_vh_clean_2.0.010000.segs.json'
+        filename = ROOT_FOLDER + '/' + scene_id + '/' + scene_id + '_vh_clean_2.0.010000.segs.json'
         pass
 
     data = json.load(open(filename, 'r'))
@@ -275,7 +275,7 @@ def readMesh(scene_id):
 
     groupSegments = []
     groupLabels = []
-    for segmentIndex in xrange(len(aggregation)):
+    for segmentIndex in range(len(aggregation)):
         groupSegments.append(aggregation[segmentIndex]['segments'])
         groupLabels.append(aggregation[segmentIndex]['label'])
         continue
@@ -303,7 +303,7 @@ def readMesh(scene_id):
     numPlanes = 1000
 
     segmentEdges = []
-    for faceIndex in xrange(faces.shape[0]):
+    for faceIndex in range(faces.shape[0]):
         face = faces[faceIndex]
         segment_1 = segmentation[face[0]]
         segment_2 = segmentation[face[1]]
@@ -586,7 +586,7 @@ def readMesh(scene_id):
         segmentationColor = (np.arange(numPlanes + 1) + 1) * 100
         colorMap = np.stack([segmentationColor / (256 * 256), segmentationColor / 256 % 256, segmentationColor % 256], axis=1)
         colorMap[-1] = 0
-        annotationFolder = ROOT_FOLDER + scene_id + '/annotation/'
+        annotationFolder = ROOT_FOLDER + '/' + scene_id + '/annotation/'
         pass
 
 
@@ -595,7 +595,7 @@ def readMesh(scene_id):
         writePointCloudFace(annotationFolder + '/segments.ply', np.concatenate([points, colors], axis=-1), faces)
 
         groupedSegmentation = np.full(segmentation.shape, fill_value=-1)
-        for segmentIndex in xrange(len(aggregation)):
+        for segmentIndex in range(len(aggregation)):
             indices = aggregation[segmentIndex]['segments']
             for index in indices:
                 groupedSegmentation[segmentation == index] = segmentIndex
@@ -710,7 +710,7 @@ def readMesh(scene_id):
     planes *= pow(planesD, 2)
     
     removeIndices = []
-    for faceIndex in xrange(faces.shape[0]):
+    for faceIndex in range(faces.shape[0]):
         face = faces[faceIndex]
         segment_1 = planeSegmentation[face[0]]
         segment_2 = planeSegmentation[face[1]]

@@ -406,7 +406,7 @@ int main(int argc, char **argv)
   string key;
   double number;
   
-  string infoFilename = FLAGS_root_folder + scene_id + "/" + scene_id + ".txt";
+  string infoFilename = FLAGS_root_folder + '/' + scene_id + "/" + scene_id + ".txt";
 
   ifstream scene_file(infoFilename);
   if (scene_file.is_open()) {

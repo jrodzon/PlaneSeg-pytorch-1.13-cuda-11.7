@@ -9,7 +9,7 @@ from tqdm import tqdm
 from PIL import Image,ImageGrab
 
 # visualization of point clouds.
-path="/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/PlaneRCNNwPlaneSeg_visualization300"
+path="/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/PlaneRCNNwPlaneSeg_visualization300"
 dirs=os.listdir(path)
 
 

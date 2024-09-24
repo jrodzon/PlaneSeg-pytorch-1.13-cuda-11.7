@@ -3,9 +3,9 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 import os, shutil
-PRROOT = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/PlaneRCNNwoPlaneSeg_visualization300'
-PRPSROOT = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/PlaneRCNNwPlaneSeg_visualization300'
-SAVE = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/vis_results/2_plane_reconstruction'
+PRROOT = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/PlaneRCNNwoPlaneSeg_visualization300'
+PRPSROOT = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/PlaneRCNNwPlaneSeg_visualization300'
+SAVE = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/vis_results/2_plane_reconstruction'
 if os.path.exists(SAVE):
     shutil.rmtree(SAVE)
 os.makedirs(SAVE)

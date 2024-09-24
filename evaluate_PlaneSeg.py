@@ -30,8 +30,6 @@ from evaluate_utils import *
 from plane_utils import *
 from options import parse_args
 from config import InferenceConfig
-from models.res_concat import MaskRCNN_res_concat
-from models.ours_paper import MaskRCNN_paper
 
 # 39 58 99 605 615
 class PlaneRCNNDetector():
@@ -609,8 +607,8 @@ def evaluate(options):
                 # print(depth_statistics)
             else:
                 for c in range(len(detection_pair)):
-                    np.save(options.test_dir + '/' + str(sampleIndex) + '_plane_parameters_' + str(c) + '.npy', detection_pair[c]['detection'][:, 6:9])
-                    np.save(options.test_dir + '/' + str(sampleIndex) + '_plane_masks_' + str(c) + '.npy', detection_pair[c]['masks'][:, 80:560])
+                    np.save(options.test_dir + '/' + str(sampleIndex) + '_plane_parameters_' + str(c) + '.npy', detection_pair[c]['detection'][:, 6:9].cpu())
+                    np.save(options.test_dir + '/' + str(sampleIndex) + '_plane_masks_' + str(c) + '.npy', detection_pair[c]['masks'][:, 80:560].cpu())
                     continue
                 pass
             if sampleIndex < 30 or options.debug or options.dataset != '':

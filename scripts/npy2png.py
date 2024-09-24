@@ -4,11 +4,11 @@ import numpy as np
 import scipy.misc
 from skimage.transform import resize
 
-# path = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/nyu/'
-# path = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/eval_2nd_5epoch_nyu_2/'
-# path = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/eval_res_concat_BACK_nyu_2/'
-path = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/PlaneRCNNwoPlaneSeg_visualization300/'
-# savedir = "/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/nyudepth/"
+# path = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/nyu/'
+# path = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/eval_2nd_5epoch_nyu_2/'
+# path = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/eval_res_concat_BACK_nyu_2/'
+path = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/PlaneRCNNwoPlaneSeg_visualization300/'
+# savedir = "/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/nyudepth/"
 path_list = os.listdir(path)
 for filename in path_list:
     ff = filename.split('.')

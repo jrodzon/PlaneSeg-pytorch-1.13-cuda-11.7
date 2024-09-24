@@ -292,7 +292,7 @@ def readProposalInfo(info, proposals):
     proposals = proposals.reshape([-1, proposals.shape[-1]])
     proposalInfo = []
 
-    for proposal in xrange(numProposals):
+    for proposal in range(numProposals):
         proposalInfo.append(info[np.arange(info.shape[0]), proposals[:, proposal]])
         continue
     proposalInfo = np.stack(proposalInfo, axis=1).reshape(outputShape)
@@ -581,7 +581,7 @@ def calcVanishingPoints(allLines, numVPs):
     lines = allLines.copy()
     VPs = []
     VPLines = []
-    for VPIndex in xrange(numVPs):
+    for VPIndex in range(numVPs):
         points = lines[:, :2]
         lengths = np.linalg.norm(lines[:, 2:4] - lines[:, :2], axis=-1)
         normals = lines[:, 2:4] - lines[:, :2]
@@ -589,7 +589,7 @@ def calcVanishingPoints(allLines, numVPs):
         normals = np.stack([normals[:, 1], -normals[:, 0]], axis=1)
         maxNumInliers = 0
         bestVP = np.zeros(2)
-        for _ in xrange(min(pow(lines.shape[0], 2), 100)):
+        for _ in range(min(pow(lines.shape[0], 2), 100)):
             sampledInds = np.random.choice(lines.shape[0], 2)
             if sampledInds[0] == sampledInds[1]:
                 continue
@@ -816,8 +816,8 @@ def fitPlanesPiecewise(image, depth, normal, info, numOutputPlanes=20, imageInde
     lineSets = np.zeros((height * width, 3))
     creaseLines = np.expand_dims(np.stack([planeNormals[:, 0] / info[0], planeNormals[:, 1], -planeNormals[:, 2] / info[5]], axis=1), 1) * planesD.reshape((1, -1, 1))
     creaseLines = creaseLines - np.transpose(creaseLines, [1, 0, 2])    
-    for planeIndex_1 in xrange(planes.shape[0]):
-        for planeIndex_2 in xrange(planeIndex_1 + 1, planes.shape[0]):
+    for planeIndex_1 in range(planes.shape[0]):
+        for planeIndex_2 in range(planeIndex_1 + 1, planes.shape[0]):
             creaseLine = creaseLines[planeIndex_1, planeIndex_2]
             if abs(creaseLine[0]) > abs(creaseLine[2]):
                 vs = np.arange(height)

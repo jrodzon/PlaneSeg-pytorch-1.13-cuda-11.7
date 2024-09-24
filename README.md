@@ -1,129 +1,90 @@
-<div align="center">
+## Original repository
+Original repository and README see [README](https://github.com/nku-zhichengzhang/PlaneSeg/blob/main/README.md)
 
-# PlaneSeg: Building a Plug-in for Boosting Planar Region Segmentation [TNNLS2023]
+## Thanks to WeihongPan
+With the help of [WeihongPan](https://github.com/WeihongPan)
+and based on [his PlaneRCNN fork](https://github.com/WeihongPan/planercnn-pytorch1.10.1_cuda11.3/tree/cuda11.3_pytorch1.10?tab=readme-ov-file)
+several modifications have been done for pytorch=1.13.1 with cuda=11.7
 
+Unfortunately for me, his requirements.txt wasn't working and I was not able to setup the environment that way.
+Because of that I switched to only use conda environment
+and I have prepared `environment.yml` file.
 
-<i>Zhicheng Zhang, Song Chen, Zichuan Wang, and Jufeng Yang</i>
+## Installation prerequisities
 
-<a href=" "><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
-[![Conference](https://img.shields.io/badge/TNNLS-2023-green)](https://cis.ieee.org/publications/t-neural-networks-and-learning-systems)
-[![License](https://img.shields.io/badge/license-Apache%202-blue)](./LICENSE)
+## Installation
 
-</div>
-
-This is the official implementation of our **TNNLS 2023** paper.  </br>
-
-## Publication
-
->**PlaneSeg: Building a Plug-in for Boosting Planar Region Segmentation**<br>
-Zhicheng Zhang, Song Chen, Zichuan Wang, Jufeng Yang<br>
-<i>IEEE Transactions on Neural Networks and Learning Systems (TNNLS)</i>.</br>
-[[Paper]](https://ieeexplore.ieee.org/document/10097456) [[PDF]](./assests/final.pdf)</br>
-
-
-
-
-
-## Abstract
-
-<img src="./assests/fig1.jpg" width="50%" align="right">
-Existing methods in planar region segmentation suffer the problems of vague boundaries and failure to detect small-sized regions. To address these, this study presents an end-to-end framework, named PlaneSeg, which can be easily integrated into various plane segmentation models. Specifically, PlaneSeg contains three modules, namely the edge feature extraction module, the multi-scale  module, and the resolution-adaptation module. First, the edge feature extraction module produces edge-aware feature maps for finer segmentation boundaries. The learned edge information acts as a constraint to mitigate inaccurate boundaries. Second, the multi-scale  module combines feature maps of different layers to harvest spatial and semantic information from planar objects. The multiformity of object information can help recognize small-sized objects to produce more accurate segmentation results. Third, the resolution-adaptation module fuses the feature maps produced by the two aforementioned modules. For this module, a pair-wise feature fusion is adopted to resample the dropped pixels and extract more detailed features. Extensive experiments demonstrate that PlaneSeg outperforms other state-of-the-art approaches on three downstream tasks, including plane segmentation, 3D plane reconstruction, and depth prediction.
-
-
-## Running
-
-You can easily train and evaluate the model by running the script below.
-
-
-***Installation***: Please clone the repository, prepare enviroment, and compile corresponding packages. 
-
-1. Clone repository
+Create conda environment based on the file [environment.yml](./environment.yml):
+```shell
+conda env create -f environment.yml
 ```
-git clone https://github.com/nku-zhichengzhang/PlaneSeg.git
-```
-2. Create an Anaconda environment and install the dependencies
+> :warning: **This operation may take several minutes**
 
-```
-conda create --name ps
-conda activate ps
-conda install -y pytorch=0.4.1
-conda install pip
-pip install -r requirements.txt
-```
-3. compile `.cu` files. Details can be refered in [`PlaneRCNN`](https://github.com/NVlabs/planercnn).
-```cd nms/src/cuda/
-nvcc -c -o nms_kernel.cu.o nms_kernel.cu -x cu -Xcompiler -fPIC -arch=[arch]
-cd ../../
-python build.py
-cd ../
-
-
-cd roialign/roi_align/src/cuda/
-nvcc -c -o crop_and_resize_kernel.cu.o crop_and_resize_kernel.cu -x cu -Xcompiler -fPIC -arch=[arch]
-cd ../../
-python build.py
-cd ../../
+Activate the new environment:
+```shell
+conda activate PlaneSeg_pytorch_1_13_cuda_11_7
 ```
 
-
-***Datasets***: The used datasets are provided in the homepage of [ScanNet](http://www.scan-net.org/) and [NYUv2](https://cs.nyu.edu/~silberman/datasets/nyu_depth_v2.html). Preparation of each dataset is as same as [`PlaneRCNN`](https://github.com/NVlabs/planercnn). 
-
-
-***Hyperparameter***: You can adjust more details such as epoch, batch size, etc. Please refer to [`options.py`](./options.py) and [`config.py`](./config.py).
-
-
-***Training***: We prepare the shell to run the training process.
-
-```
-python scripts/run_shell_train.py
+Install `h5py` later, because for some reason with it, conda is not able to solve the environment within a reasonable amount of time:
+```shell
+conda install h5py=3.7.0
 ```
 
-***Evaluation***:
-
-To evaluate the performance, please run:
-```
-python scripts/run_shell_test.py
-```
-To count the parameters of model, please run:
-```
-python eval_flop_param.py
-```
-To test the running time, please run:
-```
-python eval_fps_ours.py
+Install [RoIAlign](https://github.com/longcw/RoIAlign.pytorch) from the author's instructions
+or with [the convenience script](./install_roi_align.sh):
+```shell
+./install_roi_align.sh
 ```
 
-***Visualization***: We provide the code for re-implementing experimental results in our paper.
-1. Segmentation results: run `evaluate_PlaneSeg.py` and extract the images with the name of `{idx}_segmentation_0_final.png`.
+## Frequent installation errors:
 
-<div align=center><img src="./assests/seg.jpg" width="80%"></div>
+### On cuda error with version mismatch when installing RoIAlign
 
-2. Depth Prediction: run `evaluate_PlaneSeg.py` and extract the npy files with the name of `{idx}_segmentation_0_final.png`. Then, the npy files can be visualized as the script of [`npy2png.py`](./scripts/npy2png.py).
+```shell
+The detected CUDA version (X.Y) mismatches the version that was used to compile PyTorch (11.7). Please make sure to use the same CUDA versions
+```
 
-<div align=center><img src="./assests/dep.jpg" width="50%"></div>
+Unfortunately, you must have the cuda 11.7 also locally (not only in the conda environment),
+because RoIAlign installation fails without it.
 
-3. 3D plane Reconstruction: run `vis_3d_plane_rec.py` and extract the ply files with the name of `{idx}_model_0_final.ply`. Then, the ply files can be visualized via `open3d` as the script of [`ply2png.py`](./scripts/ply2png.py).
+### On RoIAlign error - it is not a problem, the project works fine:
+```shell
+apply() got an unexpected keyword argument 'transform_fpcoor'
+```
+Check this solution:
+Replace in file tests/test2.py line 28:
+```python
+print(RoIAlign.apply(image_torch, boxes, box_index, 3, 3, transform_fpcoor=True))
+```
+with:
+```python
+roi_align =RoIAlign(3, 3, transform_fpcoor=True)
+print(roi_align(image_torch, boxes, box_index))
+```
+Source:
+https://github.com/longcw/RoIAlign.pytorch/issues/43
 
-<div align=center><img src="./assests/rec.jpg" width="50%"></div>
+### Dependencies
+In order to get rid of pre-compilation for `roialign` and `nms`, and to make it suitable for higher pytorch version, I did several changes as below:
+#### RoIAlign
+install RoIAlign for pytorch1.0 from [here](https://github.com/longcw/RoIAlign.pytorch)
 
-4. Feature Visualization: run `vis_feature.py`.
-
-<div align=center><img src="./assests/fea.jpg" width="60%"></div>
-
-
-## Citation
-If you find this repo useful in your project or research, please consider citing the relevant publication.
-
-**Bibtex Citation**
-````
-@ARTICLE{Zhang2023PlaneSeg,
-  author={Zhang, Zhicheng and Chen, Song and Wang, Zichuan and Yang, Jufeng},
-  journal={IEEE Transactions on Neural Networks and Learning Systems}, 
-  title={PlaneSeg: Building a Plug-In for Boosting Planar Region Segmentation}, 
-  year={2023},
-  volume={},
-  number={},
-  pages={1-15},
-  }
-
-````
+in file `models/model.py`, change
+```py
+from roialign.roi_align.crop_and_resize import CropAndResizeFunction
+```
+to
+```py
+from roi_align import CropAndResize
+```
+and replace every `CropAndResizeFunction` with `CropAndResize` without changing its usage
+#### nms
+in file `models/model.py`, change
+```py
+from nms.nms_wrapper import nms
+```
+to
+```py
+from torchvision.ops import nms
+```
+Notice that there are several differences between the usage of these two `nms` functions which I have changed in `model.py`

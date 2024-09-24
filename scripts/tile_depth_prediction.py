@@ -3,10 +3,10 @@ import cv2
 import numpy as np
 from tqdm import tqdm
 
-IMGROOT = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/eval_res_concat_BACK_nyu_2'
-PRROOT = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/eval_2nd_5epoch_nyu'
-PRPSROOT = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/test/eval_res_concat_BACK_nyu'
-SAVE = '/home/ubuntu6/wzc/PlaneSeg/PlaneRCNN/vis_results/1_depth_prediction'
+IMGROOT = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/eval_res_concat_BACK_nyu_2'
+PRROOT = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/eval_2nd_5epoch_nyu'
+PRPSROOT = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/test/eval_res_concat_BACK_nyu'
+SAVE = '/home/agent/Masters/Repos/PlaneSeg-pytorch-1.13-cuda-11.7/PlaneRCNN/vis_results/1_depth_prediction'
 for i in tqdm(range(160, 654)):
     try:
         rawimg = cv2.imread(os.path.join(IMGROOT, str(i)+'_image_0.png'))
